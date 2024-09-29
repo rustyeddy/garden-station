@@ -5,7 +5,7 @@
 ### Automated Watering
 
 > I want to automatically start watering my plants when the soil gets
-too dry and turn the water off when the soil gets wet enough.
+> too dry and turn the water off when the soil gets wet enough.
 
 #### Requirements
 
@@ -17,8 +17,8 @@ too dry and turn the water off when the soil gets wet enough.
 
 ### Configurable Moisture Levels
 
-> I want to be able to set the level that I consider the soil too dry or
-too wet.
+> I want to be able to set the level that I consider the soil too dry
+> or too wet.
 
 #### Requirements
 
@@ -27,8 +27,8 @@ too wet.
 
 ### Configurable Frequency 
 
-I want to be able to change the frequency the soil and other
-environmental data gets checked
+> I want to be able to change the frequency the soil and other
+> environmental data gets checked
 
 #### Requirements
 
@@ -37,8 +37,8 @@ environmental data gets checked
 
 ### Saved Data
 
-I want to be able to save the soil moisture levels every time the
-soil is checked locally on the device and in the cloud
+> I want to be able to save the soil moisture levels every time the
+> soil is checked locally on the device and in the cloud
 
 #### Requirements
 
@@ -47,8 +47,8 @@ soil is checked locally on the device and in the cloud
 
 ### View Data
 
-I want to be able to view graphs of moisture levels and see when the
-pump was turned on and off
+> I want to be able to view graphs of moisture levels and see when the
+> pump was turned on and off
 
 #### Requirements
 
@@ -58,8 +58,8 @@ pump was turned on and off
 
 #### Additional Environmental Data
 
-I want to collect additional environmental data such as temperature,
-humidity as well as others.
+> I want to collect additional environmental data such as temperature,
+> humidity as well as others.
 
 #### Requirements
 
@@ -69,8 +69,8 @@ humidity as well as others.
 
 ### Pump Control Manually
 
-I want to manually control the pump, turn it on or off with a physical
-button. 
+> I want to manually control the pump, turn it on or off with a physical
+> button. 
 
 #### Requirements
 
@@ -79,16 +79,25 @@ button.
 
 ### Pump Control from App
 
-I want to manually control the pump from an application
+> I want to manually control the pump from an application
 
 #### Requirements
 
 1. Pump control API
 
+
+### Schedule based watering
+
+> I want to be able to schedule watering periods by schedule
+
+#### Requirements
+
+1. Scheduler based on calendar
+
 ### Station Display
 
-I want to be able to read soil moisture level and other environmental
-data on the garden station directly
+> I want to be able to read soil moisture level and other environmental
+> data on the garden station directly
 
 #### Requirements
 
@@ -97,8 +106,8 @@ data on the garden station directly
 
 ### Application Display
 
-I want to be able to read soil moisture level and other environmental
-data on the garden from an application
+> I want to be able to read soil moisture level and other environmental
+> data on the garden from an application
 
 #### Requirements
 
@@ -107,8 +116,8 @@ data on the garden from an application
 
 ### Lighting
 
-I want to be able to add lights to my garden-station the lights should
-be able to be physically turned off and on
+> I want to be able to manually control the lighting from a physical
+> button as well as from an application. 
 
 #### Requirements
 
@@ -117,13 +126,22 @@ be able to be physically turned off and on
 
 ### Automated Lighting
 
-1. I want to be able to control the lighting from an application
-2. I want the lighting to be programmable based on light levels
+> I want the lights to automatically turn on and off based on the
+> light levels
 
 #### Requirements
 
 1. Lumenecense sensor
 2. Light application API
+
+### Schedule based lighting
+
+> I want the lights to automatically turn on and off based on the
+> light levels
+
+#### Requirements
+
+1. Scheduler based on calendar
 
 ### Wireless Power
 
