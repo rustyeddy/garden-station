@@ -4,7 +4,7 @@
 
 ### Automated Watering
 
-I want to automatically start watering my plants when the soil gets
+> I want to automatically start watering my plants when the soil gets
 too dry and turn the water off when the soil gets wet enough.
 
 #### Requirements
@@ -17,7 +17,7 @@ too dry and turn the water off when the soil gets wet enough.
 
 ### Configurable Moisture Levels
 
-I want to be able to set the level that I consider the soil too dry or
+> I want to be able to set the level that I consider the soil too dry or
 too wet.
 
 #### Requirements
