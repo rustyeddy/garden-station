@@ -1,6 +1,19 @@
-x86:
+all: test garden-station
+
+
+garden-station:
 	go build -v
 
-pi5:
-	GOOS=linux GOARCH=arm64 go build -v
+pi:
+	env GOOS=linux GOARCH=arm GOARM=7 go build -v . 
 
+test:
+	go test ./...
+
+test-v:
+	go test -v ./...
+
+$(SUBDIRS):
+	$(MAKE) -C $@
+
+.PHONY: all test build $(SUBDIRS)
