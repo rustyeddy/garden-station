@@ -11,8 +11,9 @@ import (
 )
 
 var (
-	stationName = "gardener"
-	mock        = true
+	stationName  = "gardener"
+	stationCount = 4
+	mock         = true
 )
 
 func init() {

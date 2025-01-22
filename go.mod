@@ -3,6 +3,7 @@ module github.com/sensorstation/garden-station
 go 1.23.3
 
 require github.com/sensorstation/otto v0.0.7
+replace github.com/sensorstation/otto v0.0.7 => /home/rusty/src/otto
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.0 // indirect
