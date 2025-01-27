@@ -4,6 +4,9 @@ all: test garden-station
 garden-station:
 	go build -v
 
+run:
+	go run -v .
+
 pi:
 	env GOOS=linux GOARCH=arm GOARM=7 go build -v . 
 
