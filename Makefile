@@ -1,6 +1,5 @@
 all: test garden-station
 
-
 garden-station:
 	go build -v
 

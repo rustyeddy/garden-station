@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"os"
 	"time"
 
 	"github.com/sensorstation/otto/devices"
@@ -10,6 +9,7 @@ import (
 	"github.com/sensorstation/otto/devices/oled"
 	"github.com/sensorstation/otto/devices/relay"
 	"github.com/sensorstation/otto/devices/vh400"
+	"github.com/sensorstation/otto/devices/bme280"
 	"github.com/sensorstation/otto/messanger"
 	"github.com/sensorstation/otto/station"
 	"github.com/warthog618/go-gpiocdev"
@@ -32,12 +32,11 @@ type gardener struct {
 
 func main() {
 	flag.Parse()
-	os.Exit(0)
 
 	// mock the GPIO device if we are not running on
 	// a raspberry pi or similar gpio based computer
 	if mock {
-		devices.GetMockGPIO()
+		devices.Mock(mock)
 	}
 
 	done := make(chan any)
@@ -79,6 +78,11 @@ func initGardner(name string, done chan any) *gardener {
 	off.AddPub(messanger.TopicControl("button"))
 	go off.EventLoop(done, off.ReadPub)
 	gardner.AddDevice(off)
+
+    bme := bme280.New("env", "/dev/i2c-1", 0x77)
+    bme.AddPub(messanger.TopicControl("env"))
+    go bme.TimerLoop(5 * time.Second, done, bme.ReadPub)
+    gardner.AddDevice(bme)
 
 	oled, _ := oled.New("oled", 128, 64)
 	gardner.AddDevice(oled)
