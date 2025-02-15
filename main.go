@@ -4,12 +4,12 @@ import (
 	"flag"
 	"time"
 
-	"github.com/sensorstation/otto/devices"
-	"github.com/sensorstation/otto/devices/button"
-	"github.com/sensorstation/otto/devices/oled"
-	"github.com/sensorstation/otto/devices/relay"
-	"github.com/sensorstation/otto/devices/vh400"
-	"github.com/sensorstation/otto/devices/bme280"
+	"github.com/sensorstation/otto/device"
+	"github.com/sensorstation/otto/device/bme280"
+	"github.com/sensorstation/otto/device/button"
+	"github.com/sensorstation/otto/device/oled"
+	"github.com/sensorstation/otto/device/relay"
+	"github.com/sensorstation/otto/device/vh400"
 	"github.com/sensorstation/otto/messanger"
 	"github.com/sensorstation/otto/station"
 	"github.com/warthog618/go-gpiocdev"
@@ -36,17 +36,17 @@ func main() {
 	// mock the GPIO device if we are not running on
 	// a raspberry pi or similar gpio based computer
 	if mock {
-		devices.Mock(mock)
+		device.Mock(true)
 	}
 
 	done := make(chan any)
-	gardner := initGardner(stationName, done)
+	gardner := initGardener(stationName, done)
 	gardner.Start()
 	<-done
 	gardner.Stop()
 }
 
-func initGardner(name string, done chan any) *gardener {
+func initGardener(name string, done chan any) *gardener {
 
 	gardner := &gardener{
 		Station: station.NewStation(name),
@@ -79,15 +79,15 @@ func initGardner(name string, done chan any) *gardener {
 	go off.EventLoop(done, off.ReadPub)
 	gardner.AddDevice(off)
 
-    bme := bme280.New("env", "/dev/i2c-1", 0x77)
-    bme.AddPub(messanger.TopicControl("env"))
-    go bme.TimerLoop(5 * time.Second, done, bme.ReadPub)
-    gardner.AddDevice(bme)
+	bme := bme280.New("env", "/dev/i2c-1", 0x77)
+	bme.AddPub(messanger.TopicControl("env"))
+	go bme.TimerLoop(5*time.Second, done, bme.ReadPub)
+	gardner.AddDevice(bme)
 
 	oled, _ := oled.New("oled", 128, 64)
 	gardner.AddDevice(oled)
 
-	controller := devices.NewDevice("controller")
+	controller := device.NewDevice("controller")
 	controller.AddPub(messanger.TopicData("gardner"))
 	controller.Subscribe(soil.GetPub(), gardner.MsgHandler)
 	gardner.AddDevice(controller)
