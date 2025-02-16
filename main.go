@@ -100,20 +100,22 @@ func initGardener(name string, done chan any) *gardener {
 
 func (s *gardener) MsgHandler(msg *messanger.Msg) {
 
-	// topic := c.pump.Subs[0]
-	// val := msg.Float64()
-	// pval, err := c.pump.Get()
+	pump := s.GetDevice("pump").(*relay.Relay)
 
-	// mqtt := messanger.GetMQTT()
-	// if err != nil {
-	// 	mqtt.Publish(topic, "off")
-	// 	return
-	// }
+	topic := pump.GetSubs()[0]
+	val := msg.Float64()
+	pval, err := pump.Get()
 
-	// if val < 60.0 && pval == 0 {
-	// 	mqtt.Publish(topic, "on")
-	// } else if val > 60 && pval == 1 {
-	// 	mqtt.Publish(topic, "off")
-	// }
+	mqtt := messanger.GetMQTT()
+	if err != nil {
+		mqtt.Publish(topic, "off")
+		return
+	}
+
+	if val < 1.0 && pval == 0 {
+		mqtt.Publish(topic, "on")
+	} else if val > 2.0 && pval == 1 {
+		mqtt.Publish(topic, "off")
+	}
 
 }
