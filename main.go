@@ -28,6 +28,8 @@ func main() {
 	}
 
 	done := make(chan any)
+	startApp(done)
+
 	gardner := initGardener(stationName, done)
 	gardner.Start()
 	<-done

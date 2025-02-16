@@ -23,7 +23,6 @@ func initGardener(name string, done chan any) *gardener {
 	gardner := &gardener{
 		Station: station.NewStation(name),
 	}
-
 	gardner.initSoil(done)
 	gardner.initPump()
 	gardner.initLights()
