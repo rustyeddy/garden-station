@@ -71,7 +71,7 @@ func (g *gardener) initButtons(done chan any) {
 
 func (g *gardener) initBME280(done chan any) {
 	bme := bme280.New("env", "/dev/i2c-1", 0x77)
-	bme.AddPub(messanger.TopicControl("env"))
+	bme.AddPub(messanger.TopicData("env"))
 	go bme.TimerLoop(5*time.Second, done, bme.ReadPub)
 	g.AddDevice(bme)
 }

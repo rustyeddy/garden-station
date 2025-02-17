@@ -13,7 +13,8 @@ func startApp(done chan any) {
 	s := server.GetServer()
 
 	// The following line is commented out because
-	var data any
-	s.EmbedTempl("/", data, content)
+	// var data any
+	// s.EmbedTempl("/", data, content)
+	s.Appdir("/", "app")
 	go s.Start(done)
 }

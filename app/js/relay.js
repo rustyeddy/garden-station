@@ -17,12 +17,14 @@ const options = {
         retain: false
     },
 }
+
 console.log('Connecting mqtt client');
 const client = mqtt.connect(host, options);
 client.on('error', (err) => {
     console.log('Connection error: ', err);
     client.end();
 })
+
 client.on('reconnect', () => {
     console.log('Reconnecting...');
 })
@@ -30,9 +32,40 @@ client.on('reconnect', () => {
 client.on('connect', () => {
     console.log(`Client connected: ${clientId}`);
     // Subscribe
-    console.log("subscribing to ss/c/station/relay");
     client.subscribe('ss/c/station/relay', { qos: 0 });
+    client.subscribe('ss/d/station/env', { qos: 0 });
+    client.subscribe('ss/d/station/soil', { qos: 0 });
+    client.subscribe('ss/c/station/pump', { qos: 0 });
 })
+
+client.on("message", (topic, message) => {
+    // message is Buffer
+    switch (topic) {
+    case "ss/d/station/env":
+        var j = JSON.parse(message);
+        var temp = j.Temperature.toFixed(2);
+        var hum  = j.Humidity.toFixed(2);
+        var press= j.Pressure.toFixed(2);
+
+        document.getElementById("temperature").innerHTML = temp;
+        document.getElementById("humidity").innerHTML = hum;
+        document.getElementById("pressure").innerHTML = press;
+        break;
+        
+    case "ss/d/station/soil":
+        var soil = message.toString();
+        document.getElementById("soil").innerHTML = soil;
+        break;
+
+    case "ss/c/station/pump":
+        var pump = message.toString();
+        document.getElementById("pump").innerHTML = pump;
+        break;
+    }
+
+    console.log(topic + " => " + message.toString());
+});
+
 // Unsubscribe
 /* client.unsubscribe('tt', () => {
  *   console.log('Unsubscribed');
