@@ -110,9 +110,9 @@ func (g *gardener) MsgHandler(msg *messanger.Msg) {
 		return
 	}
 
-	if val < 1.0 && pval == 0 {
+	if val < 3.0 && pval == 0 {
 		mqtt.Publish(topic, "on")
-	} else if val > 2.0 && pval == 1 {
+	} else if val > 4.0 && pval == 1 {
 		mqtt.Publish(topic, "off")
 	}
 

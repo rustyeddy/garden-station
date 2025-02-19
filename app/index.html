@@ -10,56 +10,67 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container">
-        <a class="navbar-brand" href="/">Navbar</a>
+        <a class="navbar-brand" href="/">OttO</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">Features</a>
-            <a class="nav-link" href="#">Pricing</a>
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <a class="nav-link" href="/stations.html">Stations</a>
+            <a class="nav-link" href="/about.html">About</a>
           </div>
         </div>
       </div>
     </nav>
     
     <div class="container">
-      <div class="row">
-        <div class="col">
+      <div class="row"</div>
+      <div col="4">
+      </div>
 
-          <h2>Stations</h2>
-
-        </div>
-        <div class="col-8">
-          <h1>OttO</h1>
-          <div>
-            <span>Soil: </span><span id="soil" class="h2"></span>
-          </div>
-
-          <div>
-            <span>Pump: </span><span id="pump" class="h4"></span>
-          </div>
-
-          <div>
-            <div>
-              <span>Temp: </span><span id="temperature"></span>
-            </div>
-            <div>
-              <span>Humidity: </span><span id="humidity"></span>
-            </div>
-            <div>
-              <span>Pressure: </span><span id="pressure"></span>
+      <div col="8">
+        <h2>Station</h2>
+        <div class="card-group">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <div id="soil" class="card-title h1"></div>
+              <div class="card-footer">Soil</div>
             </div>
           </div>
 
-          <input type="button" class="btn btn-success" value="On" onclick="On();">
-          <input type="button" class="btn btn-dark" value="Off" onclick="Off();">
-        </div>
-        <div class="col">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <div id="pump" class="card-title h1"></div>
+              <div class="card-footer">pump</div>
+            </div>
+          </div>
+
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <div id="temperature" class="card-title h1"></div>
+              <div class="card-footer">Temp</div>
+            </div>
+          </div>
+
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <div id="humidity" class="card-title h1"></div>
+              <div class="card-footer">Humidity</div>
+            </div>
+          </div>
+
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <div id="pressure" class="card-title h1"></div>
+              <div class="card-footer">Pressure</div>
+            </div>
+          </div>
 
         </div>
+
+        <input type="button" class="btn btn-success" value="On" onclick="On();">
+        <input type="button" class="btn btn-dark" value="Off" onclick="Off();">
+
       </div>
     </div>
 

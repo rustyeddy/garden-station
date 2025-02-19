@@ -32,6 +32,7 @@ func main() {
 
 	gardner := initGardener(stationName, done)
 	gardner.Start()
+
 	<-done
 	gardner.Stop()
 }
