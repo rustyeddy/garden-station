@@ -28,10 +28,10 @@ func main() {
 	}
 
 	done := make(chan any)
-	startApp(done)
 
 	gardner := initGardener(stationName, done)
 	gardner.Start()
+	startApp(gardner, done)
 
 	<-done
 	gardner.Stop()

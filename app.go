@@ -9,12 +9,12 @@ import (
 //go:embed app
 var content embed.FS
 
-func startApp(done chan any) {
+func startApp(g *gardener, done chan any) {
 	s := server.GetServer()
 
 	// The following line is commented out because
-	// var data any
-	// s.EmbedTempl("/", data, content)
-	s.Appdir("/", "app")
+	// s.EmbedTempl("/", content, g)
+	// s.AppTempl("/", "app/index.html", g)
+	// s.Appdir("/", "app")
 	go s.Start(done)
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/sensorstation/otto/device"
@@ -23,7 +24,7 @@ func initGardener(name string, done chan any) *gardener {
 	gardner := &gardener{
 		Station: station.NewStation(name),
 	}
-	gardner.initSoil(done)
+	gardner.initVH400(done)
 	gardner.initPump()
 	gardner.initLights()
 	gardner.initButtons(done)
@@ -34,12 +35,12 @@ func initGardener(name string, done chan any) *gardener {
 	return gardner
 }
 
-func (g *gardener) initSoil(done chan any) {
-	// set up the VH400 soil moisture sensor and go into a timer loop
-	soil := vh400.New("soil", 0)
-	soil.AddPub(messanger.TopicData("soil"))
-	go soil.TimerLoop(1*time.Second, done, soil.ReadPub)
-	g.AddDevice(soil)
+func (g *gardener) initVH400(done chan any) {
+	// set up the VH400 vh400 moisture sensor and go into a timer loop
+	vh400 := vh400.New("vh400", 0)
+	vh400.AddPub(messanger.TopicData("vh400"))
+	go vh400.TimerLoop(1*time.Second, done, vh400.ReadPub)
+	g.AddDevice(vh400)
 }
 
 func (g *gardener) initPump() {
@@ -70,7 +71,13 @@ func (g *gardener) initButtons(done chan any) {
 }
 
 func (g *gardener) initBME280(done chan any) {
-	bme := bme280.New("env", "/dev/i2c-1", 0x77)
+	bme := bme280.New("env", "/dev/i2c-1", 0x76)
+	err := bme.Init()
+	if err != nil {
+		fmt.Printf("Failed to init BME280 %+v\n", err)
+		return
+	}
+
 	bme.AddPub(messanger.TopicData("env"))
 	go bme.TimerLoop(5*time.Second, done, bme.ReadPub)
 	g.AddDevice(bme)
@@ -83,11 +90,11 @@ func (g *gardener) initOLED() {
 
 func (g *gardener) initController() {
 
-	soil := g.GetDevice("soil").(*vh400.VH400)
+	vh400 := g.GetDevice("vh400").(*vh400.VH400)
 
 	controller := device.NewDevice("controller")
 	controller.AddPub(messanger.TopicData("gardener"))
-	controller.Subscribe(soil.GetPub(), g.MsgHandler)
+	controller.Subscribe(vh400.GetPub(), g.MsgHandler)
 	g.AddDevice(controller)
 }
 
@@ -98,13 +105,13 @@ func (g *gardener) initMessanger() {
 
 func (g *gardener) MsgHandler(msg *messanger.Msg) {
 
+	mqtt := messanger.GetMQTT()
+
 	pump := g.GetDevice("pump").(*relay.Relay)
 
 	topic := pump.GetSubs()[0]
 	val := msg.Float64()
 	pval, err := pump.Get()
-
-	mqtt := messanger.GetMQTT()
 	if err != nil {
 		mqtt.Publish(topic, "off")
 		return
