@@ -3,8 +3,6 @@ package main
 import (
 	"flag"
 	"time"
-
-	"github.com/sensorstation/otto/device"
 )
 
 var (
@@ -21,18 +19,12 @@ func init() {
 func main() {
 	flag.Parse()
 
-	// mock the GPIO device if we are not running on
-	// a raspberry pi or similar gpio based computer
+	gardener := Gardener{}
 	if mock {
-		device.Mock(true)
+		gardener.Mock(true)
 	}
-
-	done := make(chan any)
-
-	gardner := initGardener(stationName, done)
-	gardner.Start()
-	startApp(gardner, done)
-
-	<-done
-	gardner.Stop()
+	gardener.Init()
+	gardener.Start()
+	<-gardener.Done()
+	gardener.Stop()
 }

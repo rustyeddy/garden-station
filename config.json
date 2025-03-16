@@ -1,0 +1,53 @@
+{
+    "station": "garden-station",
+    "devices": {
+        "soil" {
+  	    "type": "vh400",
+            "pin": 0,
+            "timer": 1 
+        },
+        "pump" {
+            "type", "gpio",
+            "direction", "output",
+            "pin": 1                
+        },
+        "light" {
+            "type": "gpio",
+            "direction": "output",
+            "pin": 16
+        },
+        "button" {
+            "type": "gpio",
+            "pin": -1
+        },
+        "temperature" {
+            "type": "bme280",
+            "bus": "/dev/i2c-1",
+            "addr": 0x77,
+            "timer": 5
+        },
+        "display" {
+            "type": "oled",
+            "name": "display",
+            "bus": "/devi2c-1",
+            "addr": 0x3c,
+            "height": 64,
+            "width": 128
+        },
+        "red" {
+            "type": "gpio",
+            "direction": "output",
+            "pin": 25
+        },
+        "yellow" {
+            "type": "gpio",
+            "direction": "output",
+            "pin": 8
+        },
+        "green" {
+            "type": "gpio",
+            "direction": "output",
+            "pin": 7
+        }
+    }
+}
