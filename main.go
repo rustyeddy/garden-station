@@ -25,10 +25,7 @@ func main() {
 	otto := otto.OttO{
 		Name:       "gardener",
 		Controller: gardener,
-	}
-
-	if mock {
-		otto.SetMock(true)
+		Mock:       mock,
 	}
 	otto.Init()
 	otto.Start()
