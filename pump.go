@@ -10,7 +10,7 @@ type Pump struct {
 }
 
 func (g *Gardener) InitPump() {
-	// setup the pump and subscribe to the pump value
+	// setup the pubmp and subscribe to the pump value
 	pump := &Pump{}
 	pump.Relay = relay.New("pump", 5)
 	pump.Topic = messanger.TopicControl("pump")

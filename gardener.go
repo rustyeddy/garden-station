@@ -12,8 +12,7 @@ type Gardener struct {
 func (g *Gardener) Init() {
 
 	// XXX make all of these functions panic on error. That will force
-	// the decision / di
-	g.initMessanger()
+	// the decision on how to handle errors
 	g.InitPump()
 	g.InitLights()
 	g.InitButtons()
@@ -22,11 +21,11 @@ func (g *Gardener) Init() {
 
 	soil := g.InitSoil(g.Done())
 	g.Subscribe(soil.Topic, g.MsgHandler)
+
 }
 
-func (g *Gardener) initMessanger() {
-	ms := messanger.GetMsgSaver()
-	ms.Saving = true
+func (g *Gardener) SetOttO(o *otto.OttO) {
+	g.OttO = o
 }
 
 func (g *Gardener) MsgHandler(msg *messanger.Msg) {

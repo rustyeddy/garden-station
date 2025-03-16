@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"time"
+
+	"github.com/sensorstation/otto"
 )
 
 var (
@@ -19,12 +21,17 @@ func init() {
 func main() {
 	flag.Parse()
 
-	gardener := Gardener{}
-	if mock {
-		gardener.Mock(true)
+	gardener := &Gardener{}
+	otto := otto.OttO{
+		Name:       "gardener",
+		Controller: gardener,
 	}
-	gardener.Init()
-	gardener.Start()
-	<-gardener.Done()
-	gardener.Stop()
+
+	if mock {
+		otto.SetMock(true)
+	}
+	otto.Init()
+	otto.Start()
+	<-otto.Done()
+	otto.Stop()
 }
