@@ -18,6 +18,7 @@ func (g *Gardener) Init() {
 	g.InitButtons()
 	g.InitBME280()
 	g.InitOLED()
+	g.InitApp()
 
 	soil := g.InitSoil(g.Done())
 	g.Subscribe(soil.Topic, g.MsgHandler)

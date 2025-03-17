@@ -12,6 +12,9 @@ pi:
 zero:
 	env GOOS=linux GOARCH=arm GOARM=6 go build -v . 
 
+serve:
+	go run -v . -mock
+
 test:
 	go test ./...
 

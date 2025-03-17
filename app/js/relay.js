@@ -19,6 +19,7 @@ const options = {
 }
 
 console.log('Connecting mqtt client');
+
 const client = mqtt.connect(host, options);
 client.on('error', (err) => {
     console.log('Connection error: ', err);
@@ -32,45 +33,51 @@ client.on('reconnect', () => {
 client.on('connect', () => {
     console.log(`Client connected: ${clientId}`);
     // Subscribe
-    client.subscribe('ss/c/station/relay', { qos: 0 });
-    client.subscribe('ss/d/station/env', { qos: 0 });
-    client.subscribe('ss/d/station/soil', { qos: 0 });
-    client.subscribe('ss/c/station/pump', { qos: 0 });
+    console.log("subscribing to ss/c/station/env");
+    // client.subscribe('ss/c/station/relay', { qos: 0 });
+    client.subscribe('ss/d/station/env', (err) => {
+        if (err) {
+            console.log("subscribe error: ", err)
+            return;
+        }
+    });
+    client.subscribe('ss/d/station/soil', (err) => {
+        if (err) {
+            console.log("subscribe error: ", err)
+            return;
+        }
+    });
+    client.subscribe('ss/c/station/pump', (err) => {
+        if (err) {
+            console.log("subscribe error: ", err)
+            return;
+        }
+    });
 })
 
-client.on("message", (topic, message) => {
-    // message is Buffer
-    switch (topic) {
-    case "ss/d/station/env":
-        var j = JSON.parse(message);
-        var temp = j.Temperature.toFixed(2);
-        var hum  = j.Humidity.toFixed(2);
-        var press= j.Pressure.toFixed(2);
+client.on('message', (topic, message) => {
+    const parts = topic.split('/');
+    const lastPart = parts.pop();
+    console.log(topic, " => ", message.toString());
 
-        document.getElementById("temperature").innerHTML = temp;
-        document.getElementById("humidity").innerHTML = hum;
-        document.getElementById("pressure").innerHTML = press;
-        break;
-        
-    case "ss/d/station/soil":
-        var soil = message.toString();
-        document.getElementById("soil").innerHTML = soil;
+    switch (lastPart) {
+    case "env":
+        var msg = JSON.parse(message);
+        document.getElementById("temperature").innerHTML = msg.Temperature.toFixed(2);
+        document.getElementById("pressure").innerHTML = msg.Pressure.toFixed(2);
+        document.getElementById("humidity").innerHTML = msg.Humidity.toFixed(2);
         break;
 
-    case "ss/c/station/pump":
-        var pump = message.toString();
-        document.getElementById("pump").innerHTML = pump;
+    case "soil":
+        document.getElementById("soil").innerHTML = message.toString()
+        break;
+
+    case "pump":
+        document.getElementById("pump").innerHTML = message.toString()
         break;
     }
 
-    console.log(topic + " => " + message.toString());
 });
-
-// Unsubscribe
-/* client.unsubscribe('tt', () => {
- *   console.log('Unsubscribed');
- * })
- */
 
 function On() {
     console.log("on")
