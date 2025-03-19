@@ -11,6 +11,8 @@ type Gardener struct {
 
 func (g *Gardener) Init() {
 
+	g.OttO.Init()
+
 	// XXX make all of these functions panic on error. That will force
 	// the decision on how to handle errors
 	g.InitPump()
@@ -25,8 +27,12 @@ func (g *Gardener) Init() {
 
 }
 
-func (g *Gardener) SetOttO(o *otto.OttO) {
-	g.OttO = o
+func (g *Gardener) Start() error {
+	return g.OttO.Start()
+}
+
+func (g *Gardener) Stop() {
+	g.OttO.Stop()
 }
 
 func (g *Gardener) MsgHandler(msg *messanger.Msg) {

@@ -1,6 +1,8 @@
 const clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
-const host = "ws://" + window.location.hostname + ":8080";
-console.log(window.location.hostname);
+// const host = "ws://" + window.location.hostname + ":8080";
+// const broker = os.getenv("MQTT_BROKER");
+const host = "ws://10.11.1.11:8080";
+console.log(host);
 
 const options = {
     keepalive: 60,

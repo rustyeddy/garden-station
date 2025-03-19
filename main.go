@@ -22,13 +22,13 @@ func main() {
 	flag.Parse()
 
 	gardener := &Gardener{}
-	otto := otto.OttO{
-		Name:       "gardener",
-		Controller: gardener,
-		Mock:       mock,
+	otto := &otto.OttO{
+		Name: "gardener",
+		Mock: mock,
 	}
-	otto.Init()
-	otto.Start()
-	<-otto.Done()
-	otto.Stop()
+	gardener.OttO = otto
+	gardener.Init()
+	gardener.Start()
+	<-gardener.Done()
+	gardener.Stop()
 }

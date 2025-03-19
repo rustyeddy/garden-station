@@ -1,13 +1,41 @@
+{{define "card"}}
+<div class="col-4">
+  <div class="card">
+    <div class="card-body">
+      <div class="card-title" id="{{.}}"></div>
+    </div>
+    <div class="card-footer">
+      <small class="text-body-secondary">{{.}}</small>
+    </div>
+  </div>
+</div>
+{{end}}
+
+{{define "soil"}}
+<div class="col-4">
+  <div class="card">
+    <div class="card-body">
+      <div class="card-title" id="soil"></div>
+    </div>
+    <div class="card-footer">
+      <small class="text-body-secondary">{{.soil}}</small>
+    </div>
+  </div>
+</div>
+{{end}}
+
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Garden Station</title>
+    <title>{{ .Title }}</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
   </head>
 
   <body>
     <div class="container">
+      
       <div class="row m-4">
 
         <div class="col-4">
@@ -21,27 +49,25 @@
         </div>
 
         <div class="col">
-          <p>
-            <span class="fs-6">Soil: </span><span id="soil" class="fw-bold fs-1"></span>
-          </p>
-          <p>
-            <span class="fs-6">Temperature: </span> <span id="temperature" class="fw-bold"></span>
-            <span class="fs-6">Humidity: </span><span id="humidity" class="fw-bold"></span>
-            <span class="fs-6">Pressure: </span><span id="pressure" class="fw-bold"></span>
-          </p>
+          <div class="row">
+            {{ .Titles }}
+            {{ template "soil" }}
 
-          <p>
-            <span class="fs-6">Pump: </span> <span id="pump" class="fw-bold"></span >           
-          </p>
 
-          <input type="button" class="btn btn-success" value="On" onclick="On();">
-          <input type="button" class="btn btn-dark" value="Off" onclick="Off();">
-
+            {{ range $id, $title := .Titles }}
+            {{ if $id eq "soil" }}
+            <h1>ID</h1>
+            {{ template "soil" }}
+            {{ else }}
+            <h1>2</h1>
+            {{ template "card" $id }}
+            {{ end }}
+            {{ end }}
+          </div>
         </div>
 
       </div>
     </div>
-
   </body>
 
   <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

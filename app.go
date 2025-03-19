@@ -15,17 +15,5 @@ var cssdir embed.FS
 
 func (g *Gardener) InitApp() {
 	s := g.Server
-
-	data := struct {
-		Name string
-		Age  int
-	}{
-		Name: "Burt",
-		Age:  99,
-	}
-	s.EmbedTempl("/", tmpldir, data)
-
-	// s.AppTempl("/", "app/index.html", g)
-	// s.Appdir("/", "app")
-	// go g.Server.Start(g.Done())
+	s.EmbedTempl("/", tmpldir)
 }
