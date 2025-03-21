@@ -11,6 +11,8 @@ type Gardener struct {
 
 func (g *Gardener) Init() {
 
+	g.OttO.Init()
+
 	// XXX make all of these functions panic on error. That will force
 	// the decision on how to handle errors
 	g.InitPump()
@@ -18,6 +20,7 @@ func (g *Gardener) Init() {
 	g.InitButtons()
 	g.InitBME280()
 	g.InitOLED()
+	g.InitLEDs()
 	g.InitApp()
 
 	soil := g.InitSoil(g.Done())
@@ -25,8 +28,12 @@ func (g *Gardener) Init() {
 
 }
 
-func (g *Gardener) SetOttO(o *otto.OttO) {
-	g.OttO = o
+func (g *Gardener) Start() error {
+	return g.OttO.Start()
+}
+
+func (g *Gardener) Stop() {
+	g.OttO.Stop()
 }
 
 func (g *Gardener) MsgHandler(msg *messanger.Msg) {
@@ -34,11 +41,13 @@ func (g *Gardener) MsgHandler(msg *messanger.Msg) {
 
 	soil := g.GetSoil()
 	pump := g.GetPump()
+	blue := g.GetLED("blue")
 
 	if soil.IsDry(moisture) && pump.IsOff() {
-
+		blue.On()
 		pump.Start()
 	} else if soil.IsWet(moisture) && pump.IsOn() {
 		pump.Stop()
+		blue.Off()
 	}
 }

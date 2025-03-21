@@ -1,6 +1,8 @@
 const clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
-const host = "ws://" + window.location.hostname + ":8080";
-console.log(window.location.hostname);
+// const host = "ws://" + window.location.hostname + ":8080";
+// const broker = os.getenv("MQTT_BROKER");
+const host = "ws://10.11.1.11:8080";
+console.log(host);
 
 const options = {
     keepalive: 60,
@@ -33,21 +35,27 @@ client.on('reconnect', () => {
 client.on('connect', () => {
     console.log(`Client connected: ${clientId}`);
     // Subscribe
-    console.log("subscribing to ss/c/station/env");
-    // client.subscribe('ss/c/station/relay', { qos: 0 });
-    client.subscribe('ss/d/station/env', (err) => {
+    console.log("subscribing to ss/c/+/env");
+    // client.subscribe('ss/c/+/relay', { qos: 0 });
+    client.subscribe('ss/d/+/env', (err) => {
         if (err) {
             console.log("subscribe error: ", err)
             return;
         }
     });
-    client.subscribe('ss/d/station/soil', (err) => {
+    client.subscribe('ss/d/+/soil', (err) => {
         if (err) {
             console.log("subscribe error: ", err)
             return;
         }
     });
-    client.subscribe('ss/c/station/pump', (err) => {
+    client.subscribe('ss/c/+/pump', (err) => {
+        if (err) {
+            console.log("subscribe error: ", err)
+            return;
+        }
+    });
+    client.subscribe('ss/e/+', (err) => {
         if (err) {
             console.log("subscribe error: ", err)
             return;

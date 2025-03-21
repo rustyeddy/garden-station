@@ -1,13 +1,37 @@
+{{define "card"}}
+<div class="card  border border-0">
+  <div class="card-body">
+    <div class="card-title" id="{{.}}"></div>
+  </div>
+  <div class="card-footer">
+    <small class="text-body-secondary">{{.}}</small>
+  </div>
+</div>
+{{end}}
+
+{{define "soil"}}
+<div class="card border border-0">
+  <div class="card-body">
+    <h1 id="soil" class="card-title"></h1>
+  </div>
+  <div class="card-footer bg-success-subtle">
+    <small class="text-body-secondary text-center">Soil Moisture</small>
+  </div>
+</div>
+{{end}}
+
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Garden Station</title>
+    <title>{{ .Title }}</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
   </head>
 
   <body>
     <div class="container">
+      
       <div class="row m-4">
 
         <div class="col-4">
@@ -21,27 +45,34 @@
         </div>
 
         <div class="col">
-          <p>
-            <span class="fs-6">Soil: </span><span id="soil" class="fw-bold fs-1"></span>
-          </p>
-          <p>
-            <span class="fs-6">Temperature: </span> <span id="temperature" class="fw-bold"></span>
-            <span class="fs-6">Humidity: </span><span id="humidity" class="fw-bold"></span>
-            <span class="fs-6">Pressure: </span><span id="pressure" class="fw-bold"></span>
-          </p>
 
-          <p>
-            <span class="fs-6">Pump: </span> <span id="pump" class="fw-bold"></span >           
-          </p>
-
-          <input type="button" class="btn btn-success" value="On" onclick="On();">
-          <input type="button" class="btn btn-dark" value="Off" onclick="Off();">
+          <div class="row">
+            <div class="col-3 text-center">
+              {{ template "soil"}}
+            </div>
+            <div class="col">
+              {{ template "card" "temperature"}}
+            </div>
+            <div class="col">
+              {{ template "card" "humidity"}}
+            </div>
+            <div class="col">
+              {{ template "card" "pressure"}}
+            </div>
+            <div class="col">
+              {{ template "card" "pump"}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              {{ template "card" "errors"}}
+            </div>
+          </div>
 
         </div>
 
       </div>
     </div>
-
   </body>
 
   <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
