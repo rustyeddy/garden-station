@@ -20,6 +20,7 @@ func (g *Gardener) Init() {
 	g.InitButtons()
 	g.InitBME280()
 	g.InitOLED()
+	g.InitLEDs()
 	g.InitApp()
 
 	soil := g.InitSoil(g.Done())
@@ -40,11 +41,13 @@ func (g *Gardener) MsgHandler(msg *messanger.Msg) {
 
 	soil := g.GetSoil()
 	pump := g.GetPump()
+	blue := g.GetLED("blue")
 
 	if soil.IsDry(moisture) && pump.IsOff() {
-
+		blue.On()
 		pump.Start()
 	} else if soil.IsWet(moisture) && pump.IsOn() {
 		pump.Stop()
+		blue.Off()
 	}
 }
