@@ -1,3 +1,5 @@
+target	= garden-station
+
 all: test garden-station
 
 garden-station:
@@ -7,7 +9,7 @@ run:
 	go run -v .
 
 pi:
-	env GOOS=linux GOARCH=arm GOARM=7 go build -v . 
+	env GOOS=linux GOARCH=arm GOARM=7 go build -v -o "${TARGET}-pi" .
 
 zero:
 	env GOOS=linux GOARCH=arm GOARM=6 go build -v . 
