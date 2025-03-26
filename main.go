@@ -8,10 +8,9 @@ import (
 )
 
 var (
-	stationName  = "gardener"
-	stationCount = 4
-	mock         = true
-	period       = 15 * time.Minute
+	stationName = "gardener"
+	mock        = true
+	period      = 15 * time.Minute
 )
 
 func init() {

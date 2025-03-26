@@ -20,7 +20,7 @@ func (g *Gardener) InitSoil(done chan any) *Soil {
 		DryThreshold: 1.5,
 		WetThreshold: 2.5,
 	}
-	soil.Topic = messanger.TopicData("soil")
+	soil.Topic = messanger.GetTopics().Data("soil")
 	go soil.TimerLoop(1*time.Second, done, soil.ReadPub)
 	g.AddDevice(soil)
 	return soil

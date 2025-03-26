@@ -13,8 +13,8 @@ func (g *Gardener) InitPump() {
 	// setup the pubmp and subscribe to the pump value
 	pump := &Pump{}
 	pump.Relay = relay.New("pump", 23)
-	pump.Topic = messanger.TopicControl("pump")
-	pump.Subscribe(messanger.TopicControl("pump"), pump.Callback)
+	pump.Topic = messanger.GetTopics().Control("pump")
+	pump.Subscribe(messanger.GetTopics().Control("pump"), pump.Callback)
 	g.AddDevice(pump)
 }
 

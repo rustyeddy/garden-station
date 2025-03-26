@@ -7,7 +7,7 @@ import (
 
 func (g *Gardener) InitLights() {
 	lights := relay.New("lights", 8)
-	lights.Topic = messanger.TopicData("lights")
-	lights.Subscribe(messanger.TopicControl("lights"), lights.Callback)
+	lights.Topic = messanger.GetTopics().Data("lights")
+	lights.Subscribe(messanger.GetTopics().Control("lights"), lights.Callback)
 	g.AddDevice(lights)
 }

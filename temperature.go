@@ -16,7 +16,7 @@ func (g *Gardener) InitBME280() {
 		return
 	}
 
-	bme.Topic = messanger.TopicData("env")
+	bme.Topic = messanger.GetTopics().Data("env")
 	go bme.TimerLoop(5*time.Second, g.Done(), bme.ReadPub)
 	g.AddDevice(bme)
 }

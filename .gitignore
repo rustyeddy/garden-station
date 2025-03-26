@@ -25,5 +25,6 @@ go.work.sum
 .env
 
 garden-station
+garden-station_pi
 __debug*
 __test*

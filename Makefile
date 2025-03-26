@@ -9,7 +9,7 @@ run:
 	go run -v .
 
 pi:
-	env GOOS=linux GOARCH=arm GOARM=7 go build -v -o "${TARGET}-pi" .
+	env GOOS=linux GOARCH=arm GOARM=7 go build -v -o "${target}_pi" .
 
 zero:
 	env GOOS=linux GOARCH=arm GOARM=6 go build -v . 

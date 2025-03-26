@@ -21,8 +21,8 @@ func (g *Gardener) InitLEDs() {
 
 	for _, n := range leds {
 		l := relay.New(n.name, n.pin)
-		l.Topic = messanger.TopicData(n.name)
-		l.Subscribe(messanger.TopicControl(n.name), l.Callback)
+		l.Topic = messanger.GetTopics().Data(n.name)
+		l.Subscribe(messanger.GetTopics().Control(n.name), l.Callback)
 		g.AddDevice(l)
 	}
 }
