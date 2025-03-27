@@ -38,9 +38,11 @@ func (p *Pump) IsOff() bool {
 }
 
 func (p *Pump) Start() {
+	messanger.AddEventNow("pump", "start")
 	p.PubData("on")
 }
 
 func (p *Pump) Stop() {
+	messanger.AddEventNow("pump", "stop")
 	p.PubData("off")
 }

@@ -20,6 +20,9 @@
 </div>
 {{end}}
 
+{{define "station"}}
+
+{{end}}
 
 <html lang="en">
   <head>
@@ -63,6 +66,13 @@
               {{ template "card" "pump"}}
             </div>
           </div>
+          <div class="row">
+            <div class="col">
+              <pre id="station"></pre>
+              {{ template "station" }}
+            </div>
+          </div>
+
           <div class="row">
             <div class="col">
               {{ template "card" "errors"}}

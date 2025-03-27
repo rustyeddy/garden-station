@@ -49,6 +49,12 @@ client.on('connect', () => {
             return;
         }
     });
+    client.subscribe('ss/d/+/hello', (err) => {
+        if (err) {
+            console.log("subscribe error: ", err)
+            return;
+        }
+    });
     client.subscribe('ss/c/+/pump', (err) => {
         if (err) {
             console.log("subscribe error: ", err)
@@ -71,18 +77,23 @@ client.on('message', (topic, message) => {
     switch (lastPart) {
     case "env":
         var msg = JSON.parse(message);
-        document.getElementById("temperature").innerHTML = msg.Temperature.toFixed(2);
-        document.getElementById("pressure").innerHTML = msg.Pressure.toFixed(2);
-        document.getElementById("humidity").innerHTML = msg.Humidity.toFixed(2);
+        document.getElementById("temperature").innerHTML = msg.Temperature;
+        document.getElementById("pressure").innerHTML = msg.Pressure;
+        document.getElementById("humidity").innerHTML = msg.Humidity;
         break;
 
     case "soil":
-        document.getElementById("soil").innerHTML = message.toString()
+        document.getElementById("soil").innerHTML = message.toString();
         break;
 
     case "pump":
-        document.getElementById("pump").innerHTML = message.toString()
+        document.getElementById("pump").innerHTML = message.toString();
         break;
+
+    case "hello":
+        var msg = JSON.parse(message)
+        var ststr = JSON.stringify(msg, null, 4);
+        document.getElementById("station").innerHTML = ststr;
     }
 
 });

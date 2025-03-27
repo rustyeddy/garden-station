@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/sensorstation/otto"
 	"github.com/sensorstation/otto/messanger"
 )
@@ -37,6 +39,9 @@ func (g *Gardener) Stop() {
 }
 
 func (g *Gardener) MsgHandler(msg *messanger.Msg) {
+
+	fmt.Printf("MSG: %#v\n", msg)
+
 	moisture := msg.Float64()
 
 	soil := g.GetSoil()
@@ -44,10 +49,10 @@ func (g *Gardener) MsgHandler(msg *messanger.Msg) {
 	blue := g.GetLED("blue")
 
 	if soil.IsDry(moisture) && pump.IsOff() {
-		blue.On()
+		blue.PubData("on") // turn the blue LED on
 		pump.Start()
 	} else if soil.IsWet(moisture) && pump.IsOn() {
 		pump.Stop()
-		blue.Off()
+		blue.PubData("off") // turn the blue LED off
 	}
 }
