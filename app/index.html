@@ -1,28 +1,74 @@
-{{define "card"}}
-<div class="card  border border-0">
-  <div class="card-body">
-    <div class="card-title" id="{{.}}"></div>
+{{define "soil"}}
+<div class="card" style="height: 280px">
+  <div class="card-body mt-2">
+    <h1 id="soil" class="display-1 fw-bold text-center card-title"></h1>
+    <p class="fs-5 align-bottom text-end"><em><small>pump</em></small><span id="pump" class="m-4 badge text-bg-success" style="width: 60px">off</span>
   </div>
-  <div class="card-footer">
-    <small class="text-body-secondary">{{.}}</small>
+  <div class="card-footer bg-success-subtle">
+    <small class="text-body-secondary text-end">Soil Moisture</small>
   </div>
 </div>
 {{end}}
 
-{{define "soil"}}
-<div class="card border border-0">
+{{define "env"}}
+<div class="card" style="height: 280px">
   <div class="card-body">
-    <h1 id="soil" class="card-title"></h1>
+    <table class="table mt-4">
+      <tr>
+	<td id="temperature" class="fs-3 fw-sembold"></td> <td class="fw-light align-bottom"><em><small>temperature</small></em></td>
+      </tr>
+      <tr>
+	<td id="humidity"    class="fs-3 fw-sembold"></td> <td class="fw-light align-bottom"><em><small>humidity</small></em></td>
+      </tr>
+      <tr>
+	<td id="pressure"    class="fs-3 fw-sembold"></td> <td class="fw-light align-bottom"><em><small>pressure</small></em></td>
+      </tr>
+    </table>
   </div>
-  <div class="card-footer bg-success-subtle">
-    <small class="text-body-secondary text-center">Soil Moisture</small>
+  <div class="card-footer">
+    <small class="text-body-secondary">Environment</small>
   </div>
 </div>
 {{end}}
 
 {{define "station"}}
+<div class="card" style="height: 280px">
+  <div class="card-body">
+    <table id="station" class="table mt-4">
+      <tr>
+	<td class="fw-light align-bottom"><em><small>Station</small></em></td>
+	<td id="stationId" class="fs-3 fw-sembold"></td> 
+      </tr>
+      <tr>
+	<td class="fw-light align-bottom"><em><small>Hostname</small></em></td>
+	<td id="hostname" class="fs-3 fw-sembold"></td>
+      </tr>
+      <tr>
+	<td class="fw-light align-bottom"><em><small>Interfaces</small></em></td>
+	<td id="ifaces" class="fs-6"></td>
+      </tr>
+    </table>
 
+  </div>
+  <div class="card-footer">
+    <small class="text-body-secondary">Station Information</small>
+  </div>
+</div>
 {{end}}
+
+{{ define "pump" }}
+<div class="card" style="height: 280px">
+  <div class="card-body">
+    <div class="vstack gap-2 col-md-5 mx-auto">
+      <button id="on" type="button" class="btn btn-large btn-success mt-5">Pump On</button>
+      <button id="off" type="button" class="btn btn-large btn-danger">Pump Off</button>
+    </div>
+  </div>
+  <div class="card-footer">
+    <small class="text-body-secondary">Pump Control</small>
+  </div>
+</div>
+{{ end }}
 
 <html lang="en">
   <head>
@@ -32,61 +78,49 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
   </head>
 
-  <body>
-    <div class="container">
+  <body class="bg-light">
+    <div class="container-fluid viewport-height">
       
       <div class="row m-4">
 
-        <div class="col-4">
-          <h2>Garden Station</h2>
+	<!--
+        <div class="col-2 text-bg-dark p-3">
+          <h3>Garden Station</h3>
           <nav class="nav flex-column">
-            <a class="nav-link active" aria-current="Home" href="/">Home</a>
-            <a class="nav-link" href="stations">Stations</a>
-            <a class="nav-link" href="data">Data</a>
-            <a class="nav-link disabled">Config</a>
+            <a class="nav-link link-light active" aria-current="Home" href="/">Home</a>
+            <a class="nav-link link-light" href="stations">Stations</a>
+            <a class="nav-link link-light" href="data">Data</a>
+            <a class="nav-link link-light">Config</a>
           </nav>
         </div>
-
-        <div class="col">
-
-          <div class="row">
-            <div class="col-3 text-center">
-              {{ template "soil"}}
-            </div>
-            <div class="col">
-              {{ template "card" "temperature"}}
-            </div>
-            <div class="col">
-              {{ template "card" "humidity"}}
-            </div>
-            <div class="col">
-              {{ template "card" "pressure"}}
-            </div>
-            <div class="col">
-              {{ template "card" "pump"}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <pre id="station"></pre>
-              {{ template "station" }}
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              {{ template "card" "errors"}}
-            </div>
-          </div>
-
+	-->
+	<div class="col"></div>
+        <div class="col-4">
+          {{ template "soil"}}
         </div>
 
+        <div class="col-4">
+          {{ template "env" }}
+        </div>
+	<div class="col"></div>
+      </div>
+
+      <div class="row m-4">
+	<div class="col"></div>
+        <div class="col-4">
+	  {{ template "station" }}
+        </div>
+
+	<div class="col-4">
+	  {{ template "pump" }}
+	</div>
+	<div class="col"></div>
       </div>
     </div>
   </body>
 
   <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-  <script src="/js/relay.js"></script>
+  <script src="/js/gardener.js"></script>
 
 </html>

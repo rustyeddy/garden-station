@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/sensorstation/otto"
 	"github.com/sensorstation/otto/messanger"
+	"github.com/sensorstation/otto/server"
 )
 
 type Gardener struct {
@@ -27,7 +26,6 @@ func (g *Gardener) Init() {
 
 	soil := g.InitSoil(g.Done())
 	g.Subscribe(soil.Topic, g.MsgHandler)
-
 }
 
 func (g *Gardener) Start() error {
@@ -40,13 +38,14 @@ func (g *Gardener) Stop() {
 
 func (g *Gardener) MsgHandler(msg *messanger.Msg) {
 
-	fmt.Printf("MSG: %#v\n", msg)
-
 	moisture := msg.Float64()
-
 	soil := g.GetSoil()
 	pump := g.GetPump()
 	blue := g.GetLED("blue")
+
+	for _, sock := range server.Websocks {
+		sock.GetWriteQ() <- msg
+	}
 
 	if soil.IsDry(moisture) && pump.IsOff() {
 		blue.PubData("on") // turn the blue LED on

@@ -1,6 +1,5 @@
 const clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
-// const host = "ws://" + window.location.hostname + ":8080";
-// const broker = os.getenv("MQTT_BROKER");
+
 const host = "ws://10.11.1.11:8080";
 console.log(host);
 
@@ -92,18 +91,40 @@ client.on('message', (topic, message) => {
 
     case "hello":
         var msg = JSON.parse(message)
-        var ststr = JSON.stringify(msg, null, 4);
-        document.getElementById("station").innerHTML = ststr;
+        document.getElementById("stationId").innerHTML = msg.id;
+	document.getElementById("hostname").innerHTML = msg.hostname;
+
+	const ifaces = msg.iface;
+	const ifacesEle = document.getElementById("ifaces");
+	ifacesEle.replaceChildren();
+	ifaces.forEach(function(iface) {
+	    const ifaceEle = document.createElement('div');
+	    iface.IPAddrs.forEach(function(ipaddr) {
+		const ipele = document.createElement('span');
+		ipele.classList.add("text-start");
+		ipele.innerHTML = ipaddr + ' ';
+		ifaceEle.appendChild(ipele);
+	    });
+	    const macele = document.createElement('span');
+	    macele.innerHTML = iface.MACAddr + ' ';
+	    macele.classList.add('w-50');
+	    macele.classList.add('text-end');
+	    ifaceEle.appendChild(macele);
+	    ifacesEle.appendChild(ifaceEle);
+	});
     }
 
 });
 
 function On() {
     console.log("on")
-    client.publish('ss/c/station/relay', "on", { qos: 0, retain: false })    
+    client.publish('ss/c/station/pump', "on", { qos: 0, retain: false })    
 }
 
 function Off() {
     console.log("off")
-    client.publish('ss/c/station/relay', "off", { qos: 0, retain: false })    
+    client.publish('ss/c/station/pump', "off", { qos: 0, retain: false })    
 }
+
+document.getElementById("on").addEventListener('click', On);
+document.getElementById("off").addEventListener('click', Off);
