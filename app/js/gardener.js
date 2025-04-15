@@ -33,9 +33,7 @@ client.on('reconnect', () => {
 
 client.on('connect', () => {
     console.log(`Client connected: ${clientId}`);
-    // Subscribe
     console.log("subscribing to ss/c/+/env");
-    // client.subscribe('ss/c/+/relay', { qos: 0 });
     client.subscribe('ss/d/+/env', (err) => {
         if (err) {
             console.log("subscribe error: ", err)
