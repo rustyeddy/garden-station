@@ -15,5 +15,6 @@ var cssdir embed.FS
 
 func (g *Gardener) InitApp() {
 	s := g.Server
-	s.EmbedTempl("/", tmpldir)
+	s.EmbedTempl("/", tmpldir, g)
+	// s.EmbedExec(g)
 }

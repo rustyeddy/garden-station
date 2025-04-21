@@ -74,9 +74,9 @@ client.on('message', (topic, message) => {
     switch (lastPart) {
     case "env":
         var msg = JSON.parse(message);
-        document.getElementById("temperature").innerHTML = msg.Temperature;
-        document.getElementById("pressure").innerHTML = msg.Pressure;
-        document.getElementById("humidity").innerHTML = msg.Humidity;
+        document.getElementById("temperature").innerHTML = msg.temperature;
+        document.getElementById("pressure").innerHTML = msg.pressure;
+        document.getElementById("humidity").innerHTML = msg.humidity;
         break;
 
     case "soil":
