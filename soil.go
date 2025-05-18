@@ -26,11 +26,6 @@ func (g *Gardener) InitSoil(done chan any) *Soil {
 	return soil
 }
 
-func (g *Gardener) GetSoil() *Soil {
-	soil := g.GetDevice("soil").(*Soil)
-	return soil
-}
-
 func (s *Soil) IsDry(vwc float64) bool {
 	return vwc <= s.DryThreshold
 }

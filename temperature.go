@@ -8,16 +8,15 @@ import (
 	"github.com/sensorstation/otto/messanger"
 )
 
-func (g *Gardener) InitBME280() *bme280.BME280 {
+func InitBME280(done chan any) (*bme280.BME280, error) {
 	bme := bme280.New("env", "/dev/i2c-1", 0x76)
 	err := bme.Init()
 	if err != nil {
 		fmt.Printf("Failed to init BME280 %+v\n", err)
-		return nil
+		return nil, err
 	}
 
 	bme.Topic = messanger.GetTopics().Data("env")
-	go bme.TimerLoop(5*time.Second, g.Done(), bme.ReadPub)
-	g.AddDevice(bme)
-	return bme
+	go bme.TimerLoop(5*time.Second, done, bme.ReadPub)
+	return bme, nil
 }

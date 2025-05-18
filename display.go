@@ -1,15 +1,22 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"log/slog"
 
 	"github.com/sensorstation/otto/device/bme280"
 	"github.com/sensorstation/otto/device/oled"
+	"github.com/sensorstation/otto/messanger"
 )
 
 var (
 	s Screen
 )
+
+type Display struct {
+	*oled.OLED
+}
 
 type Screen struct {
 	Title    string
@@ -20,65 +27,52 @@ type Screen struct {
 	Pump     string
 }
 
-type Display struct {
-	*oled.OLED
-	displayQ chan DisplayMsg
-}
-
-type DisplayMsg struct {
-	Topic string
-	Value any
-}
-
-func (g *Gardener) InitDisplay() {
+func InitDisplay() (*Display, error) {
 	o, err := oled.New("display", 128, 64)
 	if err != nil {
 		slog.Error("Failed to initialize OLED DISPLAY", "error", err)
-		return
+		return nil, err
 	}
-
 	display := &Display{
-		OLED:     o,
-		displayQ: make(chan DisplayMsg),
+		OLED: o,
 	}
-
-	g.AddDevice(display)
-	go func() {
-		for {
-			select {
-			case msg := <-display.displayQ:
-				display.DrawMsg(msg)
-			}
-		}
-	}()
-	display.displayQ <- DisplayMsg{
-		Topic: "title",
-		Value: "Initializing...",
-	}
+	display.Subscribe(messanger.GetTopics().Control("display"), display.MsgHandler)
+	return display, nil
 }
 
-func (d *Display) DrawMsg(msg DisplayMsg) {
+func (d *Display) MsgHandler(msg *messanger.Msg) {
 	defer d.Draw()
 	d.Clear()
 
-	switch msg.Topic {
+	topic := msg.Path[3]
+	fmt.Printf("TOPIC: %s\n", topic)
+
+	switch topic {
 	case "title":
-		s.Title = msg.Value.(string)
+		s.Title = msg.String()
 
 	case "soil":
-		s.Soil = msg.Value.(string)
+		s.Soil = msg.String()
 
 	case "pump":
-		s.Pump = msg.Value.(string)
+		s.Pump = msg.String()
 
 	case "env":
-		e := msg.Value.(bme280.Env)
-		s.Temp = e.Temperature
-		s.Humidity = e.Humidity
-		s.Pressure = e.Pressure
+		var env bme280.Env
+		err := json.Unmarshal(msg.Data, &env)
+		if err != nil {
+			fmt.Printf("Failed to unmarshal: %+v\n", err)
+			return
+		}
 
+		s.Temp = env.Temperature
+		s.Humidity = env.Humidity
+		s.Pressure = env.Pressure
 	}
+	d.DrawScreen()
+}
 
+func (d *Display) DrawScreen() {
 	y := 15
 	d.DrawString(0, y, s.Title)
 	d.DrawString(85, y, s.Pump)
