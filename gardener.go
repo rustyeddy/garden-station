@@ -15,14 +15,11 @@ func (g *Gardener) Init() {
 
 	g.OttO.Init()
 
-	// XXX make all of these functions panic on error. That will force
-	// the decision on how to handle errors
 	display, err := InitDisplay()
 	if err != nil {
 		fmt.Printf("Failed to initialize display")
 	}
 	g.AddDevice(display)
-
 	g.InitPump()
 	g.InitLights()
 	g.InitButtons()
