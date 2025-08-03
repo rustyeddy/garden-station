@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/sensorstation/otto"
-	"github.com/sensorstation/otto/messanger"
+	"github.com/rustyeddy/otto"
+	"github.com/rustyeddy/otto/messanger"
 )
 
 type Gardener struct {

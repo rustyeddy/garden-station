@@ -1,9 +1,9 @@
-module github.com/sensorstation/garden-station
+module github.com/rustyeddy/garden-station
 
 go 1.23.3
 
 require (
-	github.com/sensorstation/otto v0.0.7
+	github.com/rustyeddy/otto v0.0.7
 	github.com/stretchr/testify v1.10.0
 	github.com/warthog618/go-gpiocdev v0.9.1
 )

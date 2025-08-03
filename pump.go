@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/sensorstation/otto/device/relay"
-	"github.com/sensorstation/otto/messanger"
+	"github.com/rustyeddy/otto/device/relay"
+	"github.com/rustyeddy/otto/messanger"
 )
 
 type Pump struct {

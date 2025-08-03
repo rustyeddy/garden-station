@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/sensorstation/otto/device/bme280"
-	"github.com/sensorstation/otto/device/oled"
-	"github.com/sensorstation/otto/messanger"
+	"github.com/rustyeddy/otto/device/bme280"
+	"github.com/rustyeddy/otto/device/oled"
+	"github.com/rustyeddy/otto/messanger"
 )
 
 var (

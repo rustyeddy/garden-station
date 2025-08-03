@@ -3,8 +3,8 @@ package main
 import (
 	"time"
 
-	"github.com/sensorstation/otto/device/vh400"
-	"github.com/sensorstation/otto/messanger"
+	"github.com/rustyeddy/otto/device/vh400"
+	"github.com/rustyeddy/otto/messanger"
 )
 
 type Soil struct {

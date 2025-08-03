@@ -3,8 +3,8 @@ package main
 import (
 	"log/slog"
 
-	"github.com/sensorstation/otto/device/relay"
-	"github.com/sensorstation/otto/messanger"
+	"github.com/rustyeddy/otto/device/relay"
+	"github.com/rustyeddy/otto/messanger"
 )
 
 func (g *Gardener) InitLEDs() {

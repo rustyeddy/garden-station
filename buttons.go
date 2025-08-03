@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/sensorstation/otto/device/button"
-	"github.com/sensorstation/otto/messanger"
+	"github.com/rustyeddy/otto/device/button"
+	"github.com/rustyeddy/otto/messanger"
 	"github.com/warthog618/go-gpiocdev"
 )
 

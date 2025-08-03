@@ -4,7 +4,7 @@ import (
 	"flag"
 	"time"
 
-	"github.com/sensorstation/otto"
+	"github.com/rustyeddy/otto"
 )
 
 var (

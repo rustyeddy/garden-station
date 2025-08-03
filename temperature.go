@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sensorstation/otto/device/bme280"
-	"github.com/sensorstation/otto/messanger"
+	"github.com/rustyeddy/otto/device/bme280"
+	"github.com/rustyeddy/otto/messanger"
 )
 
 func InitBME280(done chan any) (*bme280.BME280, error) {
