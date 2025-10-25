@@ -25,14 +25,14 @@ func (g *Gardener) InitSoil(done chan any) *Soil {
 		DryThreshold: 1.5,
 		WetThreshold: 2.5,
 	}
-	
+
 	// Open the device for reading
 	if err := soil.VH400.Open(); err != nil {
 		fmt.Printf("Failed to open VH400 soil sensor: %v\n", err)
 	}
 
 	soilManaged := g.AddManagedDevice("soil", soil, messanger.GetTopics().Data("soil"))
-	
+
 	// Start timer loop for periodic soil moisture readings
 	soilManaged.StartTimerLoop(1*time.Second, done)
 

@@ -40,7 +40,7 @@ func (g *Gardener) Init() {
 		fmt.Printf("Failed to initialize bme280")
 	} else {
 		bmeManaged := g.AddManagedDevice("env", bme, messanger.GetTopics().Data("env"))
-		
+
 		// Start timer loop for periodic sensor readings
 		bmeManaged.StartTimerLoop(5*time.Second, g.Done())
 	}
