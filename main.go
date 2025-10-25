@@ -8,7 +8,7 @@ import (
 	"syscall"
 
 	"github.com/rustyeddy/devices"
-	ottoPkg "github.com/rustyeddy/otto"
+	"github.com/rustyeddy/otto"
 )
 
 var (
@@ -35,13 +35,13 @@ func main() {
 	}
 
 	gardener := &Gardener{}
-	ottClient := &ottoPkg.OttO{
+	oTTo := &otto.OttO{
 		Name:       stationName,
 		Mock:       mock,
 		UseLocal:   useLocal,
 		MQTTBroker: mqttBroker,
 	}
-	gardener.OttO = ottClient
+	gardener.OttO = oTTo
 	gardener.Init()
 	if err := gardener.Start(); err != nil {
 		log.Printf("failed to start gardener: %v", err)
