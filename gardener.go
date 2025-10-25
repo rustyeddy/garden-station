@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/rustyeddy/otto"
 	"github.com/rustyeddy/otto/messanger"
@@ -18,8 +19,16 @@ func (g *Gardener) Init() {
 	display, err := InitDisplay()
 	if err != nil {
 		fmt.Printf("Failed to initialize display")
+	} else {
+		g.AddManagedDevice("display", display, messanger.GetTopics().Control("display"))
+
+		// Set up custom message handler for display
+		displayHandler := messanger.MsgHandler(func(msg *messanger.Msg) error {
+			display.MsgHandler(msg)
+			return nil
+		})
+		g.Subscribe(messanger.GetTopics().Control("display"), displayHandler)
 	}
-	g.AddDevice(display)
 	g.InitPump()
 	g.InitLights()
 	g.InitButtons()
@@ -29,11 +38,24 @@ func (g *Gardener) Init() {
 	bme, err := InitBME280(g.Done())
 	if err != nil {
 		fmt.Printf("Failed to initialize bme280")
-	}
-	g.AddDevice(bme)
+	} else {
+		bmeManaged := g.AddManagedDevice("env", bme, messanger.GetTopics().Data("env"))
 
-	soil := g.InitSoil(g.Done())
-	g.Subscribe(soil.Topic, g.MsgHandler)
+		// Check if the device has TimerLoop method, if so use it
+		if timerLooper, ok := interface{}(bme).(interface {
+			TimerLoop(time.Duration, chan any, func())
+		}); ok {
+			go timerLooper.TimerLoop(5*time.Second, g.Done(), bmeManaged.ReadPub)
+		}
+	}
+
+	g.InitSoil(g.Done())
+
+	msgHandler := messanger.MsgHandler(func(msg *messanger.Msg) error {
+		g.MsgHandler(msg)
+		return nil
+	})
+	g.Subscribe(messanger.GetTopics().Data("soil"), msgHandler)
 }
 
 func (g *Gardener) Start() error {
@@ -45,7 +67,11 @@ func (g *Gardener) Stop() {
 }
 
 func (g *Gardener) GetSoil() *Soil {
-	soil := g.GetDevice("soil").(*Soil)
+	md := g.GetManagedDevice("soil")
+	if md == nil {
+		return nil
+	}
+	soil := md.Device.(*Soil)
 	return soil
 }
 

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/rustyeddy/otto/device/bme280"
-	"github.com/rustyeddy/otto/device/oled"
+	"github.com/rustyeddy/devices/bme280"
+	"github.com/rustyeddy/devices/oled"
 	"github.com/rustyeddy/otto/messanger"
 )
 
@@ -16,6 +16,10 @@ var (
 
 type Display struct {
 	*oled.OLED
+}
+
+func (d *Display) ID() string {
+	return "display"
 }
 
 type Screen struct {
@@ -36,7 +40,6 @@ func InitDisplay() (*Display, error) {
 	display := &Display{
 		OLED: o,
 	}
-	display.Subscribe(messanger.GetTopics().Control("display"), display.MsgHandler)
 	return display, nil
 }
 

@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../otto"
+		},
+		{
+			"path": "../devices"
+		}
+	],
+	"settings": {}
+}

@@ -3,7 +3,7 @@ package main
 import (
 	"log/slog"
 
-	"github.com/rustyeddy/otto/device/relay"
+	"github.com/rustyeddy/devices/relay"
 	"github.com/rustyeddy/otto/messanger"
 )
 
@@ -21,18 +21,17 @@ func (g *Gardener) InitLEDs() {
 
 	for _, n := range leds {
 		l := relay.New(n.name, n.pin)
-		l.Topic = messanger.GetTopics().Control(n.name)
-		l.Subscribe(messanger.GetTopics().Control(n.name), l.Callback)
-		g.AddDevice(l)
+		ledManaged := g.AddManagedDevice(n.name, l, messanger.GetTopics().Control(n.name))
+		ledManaged.Subscribe(messanger.GetTopics().Control(n.name), l.Callback)
 	}
 }
 
 func (g *Gardener) GetLED(color string) *relay.Relay {
-	d := g.GetDevice(color)
-	if d == nil {
+	md := g.GetManagedDevice(color)
+	if md == nil {
 		slog.Error("LED not found", "color", color)
 		return nil
 	}
-	led := d.(*relay.Relay)
+	led := md.Device.(*relay.Relay)
 	return led
 }
