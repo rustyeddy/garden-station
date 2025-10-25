@@ -40,13 +40,9 @@ func (g *Gardener) Init() {
 		fmt.Printf("Failed to initialize bme280")
 	} else {
 		bmeManaged := g.AddManagedDevice("env", bme, messanger.GetTopics().Data("env"))
-
-		// Check if the device has TimerLoop method, if so use it
-		if timerLooper, ok := interface{}(bme).(interface {
-			TimerLoop(time.Duration, chan any, func())
-		}); ok {
-			go timerLooper.TimerLoop(5*time.Second, g.Done(), bmeManaged.ReadPub)
-		}
+		
+		// Start timer loop for periodic sensor readings
+		bmeManaged.StartTimerLoop(5*time.Second, g.Done())
 	}
 
 	g.InitSoil(g.Done())

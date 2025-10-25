@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/rustyeddy/devices/vh400"
@@ -24,15 +25,16 @@ func (g *Gardener) InitSoil(done chan any) *Soil {
 		DryThreshold: 1.5,
 		WetThreshold: 2.5,
 	}
+	
+	// Open the device for reading
+	if err := soil.VH400.Open(); err != nil {
+		fmt.Printf("Failed to open VH400 soil sensor: %v\n", err)
+	}
 
 	soilManaged := g.AddManagedDevice("soil", soil, messanger.GetTopics().Data("soil"))
-
-	// Check if the device has TimerLoop method, if so use it
-	if timerLooper, ok := interface{}(soil.VH400).(interface {
-		TimerLoop(time.Duration, chan any, func())
-	}); ok {
-		go timerLooper.TimerLoop(1*time.Second, done, soilManaged.ReadPub)
-	}
+	
+	// Start timer loop for periodic soil moisture readings
+	soilManaged.StartTimerLoop(1*time.Second, done)
 
 	return soil
 }
