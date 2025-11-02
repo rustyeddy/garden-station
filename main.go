@@ -43,9 +43,7 @@ func main() {
 	}
 	gardener.OttO = oTTo
 	gardener.Init()
-	if err := gardener.Start(); err != nil {
-		log.Printf("failed to start gardener: %v", err)
-	}
+	go gardener.Start()
 
 	// Handle OS signals and call Stop() for graceful shutdown
 	signals := make(chan os.Signal, 1)
@@ -54,6 +52,7 @@ func main() {
 		sig := <-signals
 		log.Printf("received signal %s, stopping gardener", sig)
 		gardener.Stop()
+		os.Exit(0)
 	}()
 
 	<-gardener.Done()

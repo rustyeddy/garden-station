@@ -54,8 +54,8 @@ func (g *Gardener) Init() {
 	g.Subscribe(messanger.GetTopics().Data("soil"), msgHandler)
 }
 
-func (g *Gardener) Start() error {
-	return g.OttO.Start()
+func (g *Gardener) Start() {
+	g.OttO.Start()
 }
 
 func (g *Gardener) Stop() {
