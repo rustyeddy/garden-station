@@ -10,5 +10,7 @@
 			"path": "../devices"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"makefile.configureOnOpen": false
+	}
 }
