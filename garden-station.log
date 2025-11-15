@@ -1,0 +1,6 @@
+time=2025-11-15T16:30:57.560Z level=INFO msg="starting garden-station" station=gardener mock=true local=true mqtt_broker=test.mosquitto.org log_level=info log_output=file
+time=2025-11-15T16:35:14.184Z level=INFO msg="received signal, stopping gardener" signal=interrupt
+time=2025-11-15T16:35:47.884Z level=INFO msg="starting garden-station" station=gardener mock=true local=true mqtt_broker=test.mosquitto.org log_level=info log_output=file
+time=2025-11-15T16:39:21.547Z level=INFO msg="received signal, stopping gardener" signal=interrupt
+time=2025-11-15T16:39:51.395Z level=INFO msg="starting garden-station" station=gardener mock=true local=true mqtt_broker=test.mosquitto.org log_level=info log_output=file
+time=2025-11-15T16:40:20.046Z level=INFO msg="received signal, stopping gardener" signal=interrupt

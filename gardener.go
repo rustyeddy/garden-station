@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"time"
 
 	"github.com/rustyeddy/devices"
@@ -72,7 +73,7 @@ func (g *Gardener) initButtons() {
 	on.RegisterEventHandler(func(evt *devices.DeviceEvent) {
 		switch evt.Type {
 		case devices.DeviceEventRisingEdge:
-			println("ON button pressed")
+			slog.Info("button pressed", "button", "on", "action", "pump_on")
 			g.Messanger.Pub("pump", []byte("on"))
 			g.Messanger.Pub("blue", []byte("on"))
 			g.Messanger.Pub("display", []byte("Pump ON"))
@@ -87,7 +88,7 @@ func (g *Gardener) initButtons() {
 	off.RegisterEventHandler(func(evt *devices.DeviceEvent) {
 		switch evt.Type {
 		case devices.DeviceEventRisingEdge:
-			println("OFF button pressed")
+			slog.Info("button pressed", "button", "off", "action", "pump_off")
 			g.Messanger.Pub("pump", []byte("off"))
 			g.Messanger.Pub("blue", []byte("off"))
 			g.Messanger.Pub("display", []byte("Pump OFF"))
@@ -104,10 +105,10 @@ func (g *Gardener) InitSoil() {
 	cb := func(t time.Time) {
 		value, err := soil.Get()
 		if err != nil {
-			println("Error reading soil moisture:", err.Error())
+			slog.Error("soil sensor read failed", "error", err)
 			return
 		}
-		println("Soil moisture:", value)
+		slog.Info("soil moisture reading", "value", value)
 		g.Messanger.Pub("soil", []byte(fmt.Sprintf("%5.2f", value)))
 	}
 	soil.StartTicker(10*time.Second, &cb)
@@ -131,11 +132,14 @@ func (g *Gardener) initEnv() {
 	ticker := func(t time.Time) {
 		resp, err := env.Get()
 		if err != nil {
-			println("Error reading env sensor:", err.Error())
+			slog.Error("env sensor read failed", "error", err)
 			return
 		}
-		// Todo: turn this into a JSON message
-		println(fmt.Sprintf("Env - Temp: %.2f C, Hum: %.2f %%, Pres: %.2f hPa", resp.Temperature, resp.Humidity, resp.Pressure))
+		slog.Info("env sensor reading",
+			"temperature_c", resp.Temperature,
+			"humidity_percent", resp.Humidity,
+			"pressure_hpa", resp.Pressure)
+
 		g.Messanger.Pub("env", []byte(fmt.Sprintf("Temp: %.2f, Hum: %.2f, Pres: %.2f", resp.Temperature, resp.Humidity, resp.Pressure)))
 	}
 	env.StartTicker(10*time.Second, &ticker)

@@ -3,33 +3,62 @@ package main
 import (
 	"flag"
 	"log"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/rustyeddy/devices"
+	"github.com/rustyeddy/otto/utils"
 )
 
+type Config struct {
+	StationName string
+	Mock        bool
+	UseLocal    bool
+	MQTTBroker  string
+	Log         utils.LogConfig
+}
+
 var (
-	stationName = "gardener"
-	mock        = false
-	useLocal    = false
-	mqttBroker  = "test.mosquitto.org"
+	config Config
 )
 
 func init() {
-	flag.BoolVar(&mock, "mock", false, "mock gpio")
-	flag.BoolVar(&useLocal, "local", false, "use local messaging (no MQTT)")
-	flag.StringVar(&mqttBroker, "mqtt-broker", mqttBroker, "MQTT broker address (default: test.mosquitto.org)")
+	flag.BoolVar(&config.Mock, "mock", false, "mock gpio")
+	flag.BoolVar(&config.UseLocal, "local", false, "use local messaging (no MQTT)")
+	flag.StringVar(&config.MQTTBroker, "mqtt-broker", "test.mosquitto.org", "MQTT broker address")
+	flag.StringVar(&config.StationName, "station-name", "gardener", "station name")
+
+	// Logging flags
+	flag.StringVar(&config.Log.Level, "log-level", "info", "log level: debug, info, warn, error")
+	flag.Var(&config.Log.Output, "log-output", "log output: stdout, stderr, file")
+	flag.Var(&config.Log.Format, "log-format", "log format: text, json")
+	flag.StringVar(&config.Log.FilePath, "log-file", "garden-station.log", "log file path (when log-output=file)")
+	config.Log.Output.Set("file")
+	config.Log.Format.Set("text")
 }
 
 func main() {
 	flag.Parse()
 
-	log.Printf("starting %s (mock=%v, local=%v, mqtt=%q)", stationName, mock, useLocal, mqttBroker)
+	// Initialize structured logging
+	_, err := utils.InitLoggerWithConfig(config.Log)
+	if err != nil {
+		log.Fatalf("Failed to initialize logger: %v", err)
+	}
+
+	slog.Info("starting garden-station",
+		"station", config.StationName,
+		"mock", config.Mock,
+		"local", config.UseLocal,
+		"mqtt_broker", config.MQTTBroker,
+		"log_level", config.Log.Level,
+		"log_output", config.Log.Output,
+	)
 
 	// Enable mocking in devices if mock flag is set
-	if mock {
+	if config.Mock {
 		devices.SetMock(true)
 	}
 
@@ -42,12 +71,11 @@ func main() {
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		sig := <-signals
-		log.Printf("received signal %s, stopping gardener", sig)
+		slog.Info("received signal, stopping gardener", "signal", sig)
 		gardener.Stop()
-		os.Exit(0)
 	}()
 
 	<-gardener.Done
 	gardener.Stop()
-	log.Println("gardener stopped")
+	slog.Info("gardener stopped")
 }
