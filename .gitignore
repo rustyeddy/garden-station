@@ -29,3 +29,4 @@ garden-station_pi
 garden-station-zero
 __debug*
 __test*
+*.log

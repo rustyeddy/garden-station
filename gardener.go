@@ -17,9 +17,9 @@ import (
 )
 
 type Gardener struct {
+	messanger.Messanger
 	*station.DeviceManager
 	*station.StationManager
-	messanger.Messanger
 	*server.Server
 
 	Done chan any
@@ -27,7 +27,7 @@ type Gardener struct {
 
 func (g *Gardener) GetMessanger() messanger.Messanger {
 	if g.Messanger == nil {
-		g.Messanger = messanger.NewMessanger("gardener")
+		g.Messanger = messanger.NewMessanger(config.Msg.Broker)
 	}
 	return g.Messanger
 }

@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/rustyeddy/devices"
+	"github.com/rustyeddy/otto/messanger"
 	"github.com/rustyeddy/otto/utils"
 )
 
@@ -18,6 +19,7 @@ type Config struct {
 	UseLocal    bool
 	MQTTBroker  string
 	Log         utils.LogConfig
+	Msg         messanger.MessangerConfig
 }
 
 var (
@@ -37,6 +39,8 @@ func init() {
 	flag.StringVar(&config.Log.FilePath, "log-file", "garden-station.log", "log file path (when log-output=file)")
 	config.Log.Output.Set("file")
 	config.Log.Format.Set("text")
+
+	flag.StringVar(&config.Msg.Broker, "broker", "local", "which broker MQTT should use")
 }
 
 func main() {
