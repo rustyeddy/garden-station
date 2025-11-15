@@ -35,7 +35,7 @@ func main() {
 
 	gardener := &Gardener{}
 	gardener.Init()
-	// go gardener.Start()
+	go gardener.Start()
 
 	// Handle OS signals and call Stop() for graceful shutdown
 	signals := make(chan os.Signal, 1)

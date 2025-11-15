@@ -6,9 +6,8 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/garden-station",
+      "program": "${workspaceFolder}",
       "args": [],
-      "cwd": "${workspaceFolder}/garden-station",
       "env": {}
     },
     {
@@ -16,9 +15,17 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/garden-station",
+      "program": "${workspaceFolder}",
       "args": ["-mock", "-mqtt-broker", "localhost:1883"],
-      "cwd": "${workspaceFolder}/garden-station",
+      "env": {}
+    },
+    {
+      "name": "Run garden-station (mock + local)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}",
+      "args": ["-mock", "-local"],
       "env": {}
     }
   ]

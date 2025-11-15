@@ -69,7 +69,7 @@ func (g *Gardener) initButtons() {
 	}
 	g.DeviceManager.Add(on)
 
-	on.RegisterEventHandler(devices.DeviceEventRisingEdge, func(evt *devices.DeviceEvent) {
+	on.RegisterEventHandler(func(evt *devices.DeviceEvent) {
 		switch evt.Type {
 		case devices.DeviceEventRisingEdge:
 			println("ON button pressed")
@@ -84,7 +84,7 @@ func (g *Gardener) initButtons() {
 		panic(err)
 	}
 	g.DeviceManager.Add(off)
-	off.RegisterEventHandler(devices.DeviceEventRisingEdge, func(evt *devices.DeviceEvent) {
+	off.RegisterEventHandler(func(evt *devices.DeviceEvent) {
 		switch evt.Type {
 		case devices.DeviceEventRisingEdge:
 			println("OFF button pressed")
@@ -128,7 +128,7 @@ func (g *Gardener) initEnv() {
 		panic(err)
 	}
 	g.DeviceManager.Add(env)
-	cb := func(t time.Time) {
+	ticker := func(t time.Time) {
 		resp, err := env.Get()
 		if err != nil {
 			println("Error reading env sensor:", err.Error())
@@ -138,7 +138,7 @@ func (g *Gardener) initEnv() {
 		println(fmt.Sprintf("Env - Temp: %.2f C, Hum: %.2f %%, Pres: %.2f hPa", resp.Temperature, resp.Humidity, resp.Pressure))
 		g.Messanger.Pub("env", []byte(fmt.Sprintf("Temp: %.2f, Hum: %.2f, Pres: %.2f", resp.Temperature, resp.Humidity, resp.Pressure)))
 	}
-	env.StartTicker(10*time.Second, &cb)
+	env.StartTicker(10*time.Second, &ticker)
 }
 
 func (g *Gardener) initDisplay() {
