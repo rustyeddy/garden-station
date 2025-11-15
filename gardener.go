@@ -136,9 +136,9 @@ func (g *Gardener) initEnv() {
 			return
 		}
 		slog.Info("env sensor reading",
-			"temperature_c", resp.Temperature,
-			"humidity_percent", resp.Humidity,
-			"pressure_hpa", resp.Pressure)
+			"temperature", resp.Temperature,
+			"humidity", resp.Humidity,
+			"pressure", resp.Pressure)
 
 		g.Messanger.Pub("env", []byte(fmt.Sprintf("Temp: %.2f, Hum: %.2f, Pres: %.2f", resp.Temperature, resp.Humidity, resp.Pressure)))
 	}
