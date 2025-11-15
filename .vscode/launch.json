@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run garden-station",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/garden-station",
+      "args": [],
+      "cwd": "${workspaceFolder}/garden-station",
+      "env": {}
+    },
+    {
+      "name": "Run garden-station (mock)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/garden-station",
+      "args": ["-mock", "-mqtt-broker", "localhost:1883"],
+      "cwd": "${workspaceFolder}/garden-station",
+      "env": {}
+    }
+  ]
+}

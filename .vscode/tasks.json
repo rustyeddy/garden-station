@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "make",
+      "options": { "cwd": "${workspaceFolder}/garden-station" },
+      "problemMatcher": ["$go"],
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "run",
+      "type": "shell",
+      "command": "make run",
+      "options": { "cwd": "${workspaceFolder}/garden-station" }
+    },
+    {
+      "label": "run-mock",
+      "type": "shell",
+      "command": "make run-mock",
+      "options": { "cwd": "${workspaceFolder}/garden-station" }
+    },
+    {
+      "label": "serve",
+      "type": "shell",
+      "command": "make serve",
+      "options": { "cwd": "${workspaceFolder}/garden-station" }
+    },
+    {
+      "label": "test",
+      "type": "shell",
+      "command": "make test",
+      "options": { "cwd": "${workspaceFolder}/garden-station" },
+      "group": "test"
+    },
+    {
+      "label": "test-v",
+      "type": "shell",
+      "command": "make test-v",
+      "options": { "cwd": "${workspaceFolder}/garden-station" },
+      "group": "test"
+    }
+  ]
+}

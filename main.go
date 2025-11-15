@@ -8,7 +8,6 @@ import (
 	"syscall"
 
 	"github.com/rustyeddy/devices"
-	"github.com/rustyeddy/otto"
 )
 
 var (
@@ -35,15 +34,8 @@ func main() {
 	}
 
 	gardener := &Gardener{}
-	oTTo := &otto.OttO{
-		Name:       stationName,
-		Mock:       mock,
-		UseLocal:   useLocal,
-		MQTTBroker: mqttBroker,
-	}
-	gardener.OttO = oTTo
 	gardener.Init()
-	go gardener.Start()
+	// go gardener.Start()
 
 	// Handle OS signals and call Stop() for graceful shutdown
 	signals := make(chan os.Signal, 1)
@@ -55,7 +47,7 @@ func main() {
 		os.Exit(0)
 	}()
 
-	<-gardener.Done()
+	<-gardener.Done
 	gardener.Stop()
 	log.Println("gardener stopped")
 }
