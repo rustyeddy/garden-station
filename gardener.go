@@ -162,4 +162,5 @@ func (g *Gardener) Start() {
 
 func (g *Gardener) Stop() {
 	// Implement stop logic if needed
+	g.Done <- true
 }

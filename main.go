@@ -80,6 +80,5 @@ func main() {
 	}()
 
 	<-gardener.Done
-	gardener.Stop()
 	slog.Info("gardener stopped")
 }
