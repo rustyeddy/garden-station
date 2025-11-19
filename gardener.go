@@ -140,7 +140,13 @@ func (g *Gardener) initEnv() {
 			"humidity", resp.Humidity,
 			"pressure", resp.Pressure)
 
-		g.Messanger.Pub("env", []byte(fmt.Sprintf("Temp: %.2f, Hum: %.2f, Pres: %.2f", resp.Temperature, resp.Humidity, resp.Pressure)))
+		jbuf, err := resp.JSON()
+		if err != nil {
+			slog.Error("env sensor marshal failed", "error", err)
+			return
+		}
+		slog.Info("env sensor json", "data", string(jbuf))
+		g.Messanger.Pub("env", jbuf)
 	}
 	env.StartTicker(10*time.Second, &ticker)
 }
