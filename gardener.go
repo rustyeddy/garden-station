@@ -25,13 +25,6 @@ type Gardener struct {
 	Done chan any
 }
 
-func (g *Gardener) GetMessanger() messanger.Messanger {
-	if g.Messanger == nil {
-		g.Messanger = messanger.NewMessanger(config.Msg.Broker)
-	}
-	return g.Messanger
-}
-
 func (g *Gardener) GetDeviceManager() *station.DeviceManager {
 	if g.DeviceManager == nil {
 		g.DeviceManager = station.NewDeviceManager()
@@ -50,7 +43,7 @@ var (
 )
 
 func (g *Gardener) Init() {
-	g.Messanger = g.GetMessanger()
+	g.Messanger = messanger.GetMessanger()
 	g.DeviceManager = g.GetDeviceManager()
 	g.StationManager = station.NewStationManager()
 	g.Server = server.GetServer()
@@ -203,18 +196,20 @@ func (g *Gardener) Stop() {
 func (g *Gardener) emulator(soil *vh400.VH400) {
 	ticker := time.NewTicker(5 * time.Second)
 
-	for {
-		select {
-		case <-g.Done:
-			return // Exit the goroutine when done signal is received
-		case _ = <-ticker.C:
-			// Execute this code at each tick
-			v, err := soil.Pin.Get()
-			if err != nil {
-				continue
+	go func() {
+		for {
+			select {
+			case <-g.Done:
+				return // Exit the goroutine when done signal is received
+			case _ = <-ticker.C:
+				// Execute this code at each tick
+				v, err := soil.Pin.Get()
+				if err != nil {
+					continue
+				}
+				v += 0.02
+				soil.Pin.Set(v)
 			}
-			v += 0.02
-			soil.Pin.Set(v)
 		}
-	}
+	}()
 }
